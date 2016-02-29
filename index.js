@@ -12,7 +12,7 @@ var file_text = function( files, repo ) {
 var files_attachment = function( files, verb, repo ) {
     var colors = { 'added': '#00ff00', 'removed': '#ff0000', 'modified': '#ffff66' };
     var attachment = {
-        'fallback':  'files were '+ verb + ' in this push.',
+        'fallback':  'files were ' + verb + ' in this push.',
         'color': colors[ verb ],
         'title': 'Files ' + verb,
         'mrkdwn_in': [ 'text' ],

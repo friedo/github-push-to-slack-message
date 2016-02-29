@@ -17,7 +17,7 @@ module.exports = {
         commits.forEach( function( commit ) {
             var msg = commit.message;
             msg = msg.length > 57 ? msg.substr( 0, 57 ) + '...' : msg.substr( 0, 60 );
-            commit_text += '<' + commit.url + '|' + commit.id.substr( 0, 9 ) + '> ' + msg + "\n";
+            commit_text += '<' + commit.url + '|' + commit.id.substr( 0, 9 ) + ' ' + msg + ">\n";
         } );
 
         commit_text += '```';

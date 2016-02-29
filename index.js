@@ -18,6 +18,8 @@ module.exports = {
             commit_text += commit.id.substr( 0, 7 ) + ' ' + commit.message.substr( 0, 40 ) + '...' + "\n";
         } );
 
+        commit_text += '```';
+        
         var message = {
             "text": '<' + sender.html_url + '|@' + sender.login + '> pushed ' + commits.length + ' commits to ' + '<' + repo.html_url + '|' + repo.full_name + '>',
             "attachments": [ {

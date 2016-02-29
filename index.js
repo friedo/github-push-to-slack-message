@@ -15,11 +15,13 @@ module.exports = {
 
         var commit_text = "```\n";
         commits.forEach( function( commit ) {
-            commit_text += commit.id.substr( 0, 7 ) + ' ' + commit.message.substr( 0, 40 ) + '...' + "\n";
+            var msg = commit.message;
+            msg = msg.length > 57 ? msg.substr( 0, 57 ) + '...' : msg.substr( 0, 60 );
+            commit_text += '<' + commit.url + '|' + commit.id.substr( 0, 9 ) + '> ' + msg + "\n";
         } );
 
         commit_text += '```';
-        
+
         var message = {
             "text": '<' + sender.html_url + '|@' + sender.login + '> pushed ' + commits.length + ' commits to ' + '<' + repo.html_url + '|' + repo.full_name + '>',
             "attachments": [ {

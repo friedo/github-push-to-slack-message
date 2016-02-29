@@ -13,6 +13,11 @@ module.exports = {
         var repo      = step.input( 'repository' ).first();
         var sender    = step.input( 'sender' ).first();
 
+        var commit_text = "```\n";
+        commits.forEach( function( commit ) {
+            commit_text += commit.id.substr( 0, 7 ) + ' ' + commit.message.substr( 0, 40 ) + '...' + "\n";
+        } );
+
         var message = {
             "text": '<' + sender.html_url + '|@' + sender.login + '> pushed ' + commits.length + ' commits to ' + '<' + repo.html_url + '|' + repo.full_name + '>',
             "attachments": [ {
@@ -23,7 +28,7 @@ module.exports = {
                 'author_icon': sender.avatar_url,
                 'title': 'View changes',
                 'title_link': compare,
-                'text': "this *should* be _formatted_",
+                'text': commit_text,
                 "mrkdwn_in": [ 'text' ]
             } ]
         };

@@ -14,7 +14,7 @@ module.exports = {
         var sender    = step.input( 'sender' ).first();
 
         var message = {
-            "text": '<' + sender.html_url + '|@' + sender.login + '> pushed ' + commits.length + ' commits to ' + '<' + repo.html_url + '|' + repo.full_name + '>';
+            "text": '<' + sender.html_url + '|@' + sender.login + '> pushed ' + commits.length + ' commits to ' + '<' + repo.html_url + '|' + repo.full_name + '>'
         };
 
         this.complete( message );

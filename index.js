@@ -9,7 +9,7 @@ module.exports = {
         var before    = step.input( 'before' ).first();
         var after     = step.input( 'after' ).first();
         var compare   = step.input( 'compare' ).first();
-        var commits   = step.input( 'commits' ).first().toArray();
+        var commits   = step.input( 'commits' ).first();
         var repo      = step.input( 'repository' ).first();
         var sender    = step.input( 'sender' ).first();
 

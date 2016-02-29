@@ -23,7 +23,7 @@ module.exports = {
                 'author_icon': sender.avatar_url,
                 'title': 'View changes',
                 'title_link': compare,
-                'text': "```\nthis should be formatted\n```",
+                'text': "this *should* be _formatted_",
                 "mrkdwn_in": [ 'text' ]
             } ]
         };

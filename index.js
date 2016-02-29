@@ -5,6 +5,18 @@ module.exports = {
      * @param {AppStep} step Accessor for the configuration for the step using this module.  Use step.input('{key}') to retrieve input data.
      * @param {AppData} dexter Container for all data used in this workflow.
      */
+
+    var file_text = function( files, repo ) {
+        var text = "```";
+        files.forEach( function( file ) {
+            text += '<' + repo.html_url + '/blob/master/' + file + '|' + file + ">\n";
+        } );
+
+        text += "```";
+
+        return text;
+    }
+
     run: function(step, dexter) {
         var before    = step.input( 'before' ).first();
         var after     = step.input( 'after' ).first();
@@ -30,7 +42,7 @@ module.exports = {
         commit_text += '```';
 
         var message = {
-            "text": '<' + sender.html_url + '|@' + sender.login + '> pushed ' + commits.length + ' commits to ' + '<' + repo.html_url + '|' + repo.full_name + '>',
+            "text": '<' + sender.html_url + '|@' + sender.login + '> pushed ' + commits.length + ' commits to <' + repo.html_url + '|' + repo.full_name + '>',
             "attachments": [ {
                 'fallback': 'fallback text',
                 'color': '#00ffff',
@@ -44,20 +56,16 @@ module.exports = {
             } ]
         };
 
+        /* TODO: link to files on the correct branches */
         if ( Object.keys( files.added ).length > 0 ) {
             var add_attach = {
                 'fallback':  'files were added in this push.',
                 'color': '#00ff00',
                 'title': 'Files added',
                 'mrkdwn_in': [ 'text' ],
-                'text': "```\n"
+                'text': file_text( Object.keys( files.added ).sort(), repo )
             };
 
-            Object.keys( files.added ).sort().forEach( function( file ) {
-                add_attach.text += file + "\n";
-            } );
-
-            add_attach.text += "```";
             message.attachments.push( add_attach );
         }
 
@@ -67,33 +75,24 @@ module.exports = {
                 'color': '#ff0000',
                 'title': 'Files removed',
                 'mrkdwn_in': [ 'text' ],
-                'text': "```\n"
+                'text': file_text( Object.keys( files.removed ).sort(), repo )
             };
 
-            Object.keys( files.removed ).sort().forEach( function( file ) {
-                rem_attach.text += file + "\n";
-            } );
-
-            rem_attach.text += "```";
             message.attachments.push( rem_attach );
         }
+
         if ( Object.keys( files.modified ).length > 0 ) {
             var mod_attach = {
                 'fallback':  'files were modified in this commit.',
-                'color': '#ffff00',
+                'color': '#cccc00',
                 'title': 'Files modified',
                 'mrkdwn_in': [ 'text' ],
-                'text': "```\n"
+                'text': file_text( Object.keys( files.modified ).sort(), repo )
             };
 
-            Object.keys( files.modified ).sort().forEach( function( file ) {
-                mod_attach.text += file + "\n";
-            } );
-
-            mod_attach.text += "```";
             message.attachments.push( mod_attach );
         }
-        
+
         this.complete( message );
     }
 };

@@ -9,6 +9,18 @@ var file_text = function( files, repo ) {
     return text;
 }
 
+var files_attachment = function( files, verb, repo ) {
+    var colors = { 'added': '#00ff00', 'removed': '#ff0000', 'modified': '#ffff66' };
+    var attachment = {
+        'fallback':  'files were '+ verb + ' in this push.',
+        'color': colors[ verb ],
+        'title': 'Files ' + verb,
+        'mrkdwn_in': [ 'text' ],
+        'text': file_text( files, repo )
+
+    }
+}
+
 module.exports = {
     /**
      * The main entry point for the Dexter module
@@ -58,39 +70,15 @@ module.exports = {
 
         /* TODO: link to files on the correct branches */
         if ( Object.keys( files.added ).length > 0 ) {
-            var add_attach = {
-                'fallback':  'files were added in this push.',
-                'color': '#00ff00',
-                'title': 'Files added',
-                'mrkdwn_in': [ 'text' ],
-                'text': file_text( Object.keys( files.added ).sort(), repo )
-            };
-
-            message.attachments.push( add_attach );
+            message.attachments.push( files_attachment( Object.keys( files.added ).sort(), 'added', repo ) );
         }
 
         if ( Object.keys( files.removed ).length > 0 ) {
-            var rem_attach = {
-                'fallback':  'files were removed in this push.',
-                'color': '#ff0000',
-                'title': 'Files removed',
-                'mrkdwn_in': [ 'text' ],
-                'text': file_text( Object.keys( files.removed ).sort(), repo )
-            };
-
-            message.attachments.push( rem_attach );
+            message.attachments.push( files_attachment( Object.keys( files.removed ).sort(), 'removed', repo ) );
         }
 
         if ( Object.keys( files.modified ).length > 0 ) {
-            var mod_attach = {
-                'fallback':  'files were modified in this commit.',
-                'color': '#ffff66',
-                'title': 'Files modified',
-                'mrkdwn_in': [ 'text' ],
-                'text': file_text( Object.keys( files.modified ).sort(), repo )
-            };
-
-            message.attachments.push( mod_attach );
+            message.attachments.push( files_attachment( Object.keys( files.modified ).sort(), 'modified', repo ) );
         }
 
         this.complete( message );

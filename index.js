@@ -13,11 +13,18 @@ module.exports = {
         var repo      = step.input( 'repository' ).first();
         var sender    = step.input( 'sender' ).first();
 
+        var files    = { 'added': { }, 'removed': { }, 'modified': { } };
+
         var commit_text = "```\n";
         commits.forEach( function( commit ) {
             var msg = commit.message;
             msg = msg.length > 57 ? msg.substr( 0, 57 ) + '...' : msg.substr( 0, 60 );
             commit_text += '<' + commit.url + '|' + commit.id.substr( 0, 9 ) + ' ' + msg + ">\n";
+
+            commit.added.forEach(    function( file ) { files.added[ file ]    = true } );
+            commit.removed.forEach(  function( file ) { files.removed[ file ]  = true } );
+            commit.modified.forEach( function( file ) { files.modified[ file ] = true } );
+
         } );
 
         commit_text += '```';
@@ -37,6 +44,56 @@ module.exports = {
             } ]
         };
 
+        if ( Object.keys( files.added ).length > 0 ) {
+            var add_attach = {
+                'fallback':  'files were added in this push.',
+                'color': '#00ff00',
+                'title': 'Files added',
+                'mrkdwn_in': [ 'text' ],
+                'text': "```\n"
+            };
+
+            Object.keys( files.added ).sort().forEach( function( file ) {
+                add_attach.text += file + "\n";
+            } );
+
+            add_attach.text += "```";
+            message.attachments.push( add_attach );
+        }
+
+        if ( Object.keys( files.removed ).length > 0 ) {
+            var rem_attach = {
+                'fallback':  'files were removed in this push.',
+                'color': '#ff0000',
+                'title': 'Files removed',
+                'mrkdwn_in': [ 'text' ],
+                'text': "```\n"
+            };
+
+            Object.keys( files.removed ).sort().forEach( function( file ) {
+                rem_attach.text += file + "\n";
+            } );
+
+            rem_attach.text += "```";
+            message.attachments.push( rem_attach );
+        }
+        if ( Object.keys( files.modified ).length > 0 ) {
+            var mod_attach = {
+                'fallback':  'files were modified in this commit.',
+                'color': '#ffff00',
+                'title': 'Files modified',
+                'mrkdwn_in': [ 'text' ],
+                'text': "```\n"
+            };
+
+            Object.keys( files.modified ).sort().forEach( function( file ) {
+                mod_attach.text += file + "\n";
+            } );
+
+            mod_attach.text += "```";
+            message.attachments.push( mod_attach );
+        }
+        
         this.complete( message );
     }
 };

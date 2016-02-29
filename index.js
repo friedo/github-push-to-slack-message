@@ -1,3 +1,14 @@
+var file_text = function( files, repo ) {
+    var text = "```";
+    files.forEach( function( file ) {
+        text += '<' + repo.html_url + '/blob/master/' + file + '|' + file + ">\n";
+    } );
+
+    text += "```";
+
+    return text;
+}
+
 module.exports = {
     /**
      * The main entry point for the Dexter module
@@ -5,17 +16,6 @@ module.exports = {
      * @param {AppStep} step Accessor for the configuration for the step using this module.  Use step.input('{key}') to retrieve input data.
      * @param {AppData} dexter Container for all data used in this workflow.
      */
-
-    var file_text = function( files, repo ) {
-        var text = "```";
-        files.forEach( function( file ) {
-            text += '<' + repo.html_url + '/blob/master/' + file + '|' + file + ">\n";
-        } );
-
-        text += "```";
-
-        return text;
-    }
 
     run: function(step, dexter) {
         var before    = step.input( 'before' ).first();

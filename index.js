@@ -84,7 +84,7 @@ module.exports = {
         if ( Object.keys( files.modified ).length > 0 ) {
             var mod_attach = {
                 'fallback':  'files were modified in this commit.',
-                'color': '#cccc00',
+                'color': '#eeee00',
                 'title': 'Files modified',
                 'mrkdwn_in': [ 'text' ],
                 'text': file_text( Object.keys( files.modified ).sort(), repo )

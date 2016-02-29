@@ -6,8 +6,17 @@ module.exports = {
      * @param {AppData} dexter Container for all data used in this workflow.
      */
     run: function(step, dexter) {
-        var results = { foo: 'bar' };
-        //Call this.complete with the module's output.  If there's an error, call this.fail(message) instead.
-        this.complete(results);
+        var before    = step.input( 'before' ).first();
+        var after     = step.input( 'after' ).first();
+        var compare   = step.input( 'compare' ).first();
+        var commits   = step.input( 'commits' ).toArray();
+        var repo      = step.input( 'repository' ).first();
+        var sender    = step.input( 'sender' ).first();
+
+        var message = {
+            "text": '<' + sender.html_url + '|@' + sender.login + '> pushed ' + commits.length + ' commits to ' + '<' + repo.html_url + '|' + repo.full_name + '>';
+        };
+
+        this.complete( message );
     }
 };

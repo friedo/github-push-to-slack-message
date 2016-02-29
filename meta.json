@@ -2,25 +2,42 @@
  * Metadata describing the module operation
  */
 {
-    //Required. Inputs the module expects.
     "inputs": [
-        //e.g.
-        /*
         {
-            "id": "from",
-            "title":"From"
+            "id": "before",
+            "title":"before"
+        },
+        {
+            "id": "after",
+            "title": "after"
+        },
+        {
+            "id": "compare",
+            "title": "compare"
+        },
+        {
+            "id": "commits",
+            "title": "commits"
+        },
+        {
+            "id": "repository",
+            "title": "repository"
+        },
+        {
+            "id": "sender",
+            "title": "sender"
         }
-        */
+
     ],
-    //Required. Outputs the module emits.
     "outputs": [
-      //e.g.
-      /*
         {
-            "id": "from",
-            "title":"From"
+            "id": "text",
+            "title":"Message text"
+        },
+        {
+            "id": "attachments",
+            "title": "Message attachments"
         }
-      */
     ],
-    "title": "GitHub Push to Slack Message" /* Required.A display name for the module */
+    "title": "GitHub Push to Slack Message"
 }

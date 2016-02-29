@@ -17,8 +17,9 @@ var files_attachment = function( files, verb, repo ) {
         'title': 'Files ' + verb,
         'mrkdwn_in': [ 'text' ],
         'text': file_text( files, repo )
-
     }
+
+    return attachment;
 }
 
 module.exports = {
@@ -56,6 +57,7 @@ module.exports = {
         var message = {
             "text": '<' + sender.html_url + '|@' + sender.login + '> pushed ' + commits.length + ' commits to <' + repo.html_url + '|' + repo.full_name + '>',
             "attachments": [ {
+                'fallback': '@' + sender.login + ' pushed ' + commits.length + ' commits to ' + repo.full_name,
                 'color': '#00ffff',
                 'author_name': '@' + sender.login,
                 'author_link': sender.html_url,
